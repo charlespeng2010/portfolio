@@ -36,7 +36,8 @@ function App() {
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
-    setModalOpen(false);
+      setModalOpen(false);
+      setModalIndex(0);
   };
 
   const handleImageClick = (index) => {
@@ -45,7 +46,8 @@ function App() {
   };
 
   const handleClose = () => {
-    setModalOpen(false);
+      setModalOpen(false);
+      setModalIndex(0);
   };
 
   const handlePrev = () => {
