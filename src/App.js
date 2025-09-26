@@ -3,6 +3,12 @@ import Header from './components/Header';
 import ImageGallery from './components/ImageGallery';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import Dialog from '@mui/material/Dialog';
+import IconButton from '@mui/material/IconButton';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import CloseIcon from '@mui/icons-material/Close';
+import galleryDataRaw from './galleryData.json';
 
 const theme = createTheme({
   palette: {
@@ -15,40 +21,39 @@ const theme = createTheme({
   },
 });
 
-// Sample images data (replace with your actual images)
-const galleryData = {
-  0: [ // Web Development
-    { url: '/images/web1.jpg', title: 'E-commerce Platform', description: 'Full-stack web application' },
-    { url: '/images/web2.jpg', title: 'Social Media Dashboard', description: 'Interactive dashboard' },
-    { url: '/images/web3.jpg', title: 'Portfolio Website', description: 'Responsive design' },
-  ],
-  1: [ // Mobile Apps
-    { url: '/images/mobile1.jpg', title: 'Fitness App', description: 'iOS and Android app' },
-    { url: '/images/mobile2.jpg', title: 'Food Delivery', description: 'Cross-platform application' },
-    { url: '/images/mobile3.jpg', title: 'Travel Guide', description: 'Location-based services' },
-  ],
-  2: [ // UI/UX Design
-    { url: '/images/design1.jpg', title: 'App Redesign', description: 'Modern UI refresh' },
-    { url: '/images/design2.jpg', title: 'Brand Identity', description: 'Logo and guidelines' },
-    { url: '/images/design3.jpg', title: 'User Interface Kit', description: 'Component library' },
-  ],
-  3: [ // Photography
-    { url: '/images/photo1.jpg', title: 'Urban Landscapes', description: 'City photography' },
-    { url: '/images/photo2.jpg', title: 'Nature Series', description: 'Environmental shots' },
-    { url: '/images/photo3.jpg', title: 'Portrait Collection', description: 'Studio portraits' },
-  ],
-  4: [ // About Me
-    { url: '/images/about1.jpg', title: 'Work Space', description: 'My creative environment' },
-    { url: '/images/about2.jpg', title: 'Team Projects', description: 'Collaboration highlights' },
-    { url: '/images/about3.jpg', title: 'Awards', description: 'Professional achievements' },
-  ],
-};
+// Prepend PUBLIC_URL to each image url
+const galleryData = {};
+Object.keys(galleryDataRaw).forEach(key => {
+  galleryData[key] = galleryDataRaw[key].map(img => ({
+    url: process.env.PUBLIC_URL + '/' + img.url.replace(/^\/+/, '')
+  }));
+});
 
 function App() {
   const [selectedTab, setSelectedTab] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalIndex, setModalIndex] = useState(0);
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
+    setModalOpen(false);
+  };
+
+  const handleImageClick = (index) => {
+    setModalIndex(index);
+    setModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+
+  const handlePrev = () => {
+    setModalIndex((prev) => (prev === 0 ? galleryData[selectedTab].length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setModalIndex((prev) => (prev === galleryData[selectedTab].length - 1 ? 0 : prev + 1));
   };
 
   return (
@@ -56,7 +61,41 @@ function App() {
       <CssBaseline />
       <div className="App">
         <Header value={selectedTab} onChange={handleTabChange} />
-        <ImageGallery images={galleryData[selectedTab]} category={selectedTab} />
+        <ImageGallery
+          images={galleryData[selectedTab]}
+          category={selectedTab}
+          onImageClick={handleImageClick}
+        />
+        <Dialog open={modalOpen} onClose={handleClose} maxWidth="md">
+          <div style={{ position: 'relative', background: '#000' }}>
+            <IconButton
+              onClick={handlePrev}
+              style={{ position: 'absolute', top: '50%', left: 10, zIndex: 2, color: '#fff', transform: 'translateY(-50%)' }}
+              aria-label="Previous"
+            >
+              <ArrowBackIosNewIcon fontSize="large" />
+            </IconButton>
+            <img
+              src={galleryData[selectedTab][modalIndex].url}
+              alt="enlarged"
+              style={{ display: 'block', maxWidth: '80vw', maxHeight: '80vh', margin: 'auto' }}
+            />
+            <IconButton
+              onClick={handleNext}
+              style={{ position: 'absolute', top: '50%', right: 10, zIndex: 2, color: '#fff', transform: 'translateY(-50%)' }}
+              aria-label="Next"
+            >
+              <ArrowForwardIosIcon fontSize="large" />
+            </IconButton>
+            <IconButton
+              onClick={handleClose}
+              style={{ position: 'absolute', top: 10, right: 10, zIndex: 2, color: '#fff' }}
+              aria-label="Close"
+            >
+              <CloseIcon fontSize="large" />
+            </IconButton>
+          </div>
+        </Dialog>
       </div>
     </ThemeProvider>
   );

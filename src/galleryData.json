@@ -1,0 +1,29 @@
+{
+  "0": [
+    { "url": "images/web/1.jpg" },
+    { "url": "images/web/2.jpg" },
+    { "url": "images/web/3.jpg" },
+    { "url": "images/web/4.jpg" },
+    { "url": "images/web/5.jpg" }
+  ],
+  "1": [
+    { "url": "images/mobile/1.jpg" },
+    { "url": "images/mobile/2.jpg" },
+    { "url": "images/mobile/3.jpg" }
+  ],
+  "2": [
+    { "url": "images/design/1.jpg" },
+    { "url": "images/design/2.jpg" },
+    { "url": "images/design/3.jpg" }
+  ],
+  "3": [
+    { "url": "images/photo/1.jpg" },
+    { "url": "images/photo/2.jpg" },
+    { "url": "images/photo/3.jpg" }
+  ],
+  "4": [
+    { "url": "images/about/1.jpg" },
+    { "url": "images/about/2.jpg" },
+    { "url": "images/about/3.jpg" }
+  ]
+}

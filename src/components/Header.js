@@ -14,21 +14,34 @@ const StyledTab = styled(Tab)({
   },
 });
 
-const Logo = styled('img')({
+const Logo = styled('img')(({ theme }) => ({
   height: 50,
   marginRight: 16,
-});
+  [theme.breakpoints.down('sm')]: {
+    height: 36,
+    marginRight: 8,
+  },
+}));
 
 const Header = ({ value, onChange }) => {
   return (
     <AppBar position="static" color="default">
-      <Toolbar>
-        <Logo src="/logo.png" alt="Portfolio Logo" />
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          My Portfolio
-        </Typography>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <StyledTabs value={value} onChange={onChange} centered>
+      <Toolbar sx={{ flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'flex-start', sm: 'center' }, py: { xs: 1, sm: 0 } }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', width: { xs: '100%', sm: 'auto' }, mb: { xs: 1, sm: 0 } }}>
+          <Logo src={process.env.PUBLIC_URL + '/logo.png'} alt="Portfolio Logo" />
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>
+            My Portfolio
+          </Typography>
+        </Box>
+        <Box sx={{ width: '100%' }}>
+          <StyledTabs
+            value={value}
+            onChange={onChange}
+            variant="scrollable"
+            scrollButtons="auto"
+            centered={false}
+            sx={{ minHeight: 36 }}
+          >
             <StyledTab label="Web Development" />
             <StyledTab label="Mobile Apps" />
             <StyledTab label="UI/UX Design" />
