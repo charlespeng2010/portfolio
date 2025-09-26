@@ -13,13 +13,23 @@ import galleryDataRaw from './galleryData.json';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1890ff',
+          main: '#1890ff',
     },
     background: {
-      default: '#f5f5f5',
+        default: '#f5f5f5',
     },
   },
 });
+
+
+// Common styles for navigation buttons
+const navButtonStyle = {
+  backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  '&:hover': {
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  },
+  boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+};
 
 // Prepend PUBLIC_URL to each image url
 const galleryData = {};
@@ -36,8 +46,8 @@ function App() {
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
-      setModalOpen(false);
-      setModalIndex(0);
+    setModalOpen(false);
+    setModalIndex(0);
   };
 
   const handleImageClick = (index) => {
@@ -46,8 +56,8 @@ function App() {
   };
 
   const handleClose = () => {
-      setModalOpen(false);
-      setModalIndex(0);
+    setModalOpen(false);
+    setModalIndex(0);
   };
 
   const handlePrev = () => {
@@ -68,11 +78,23 @@ function App() {
           category={selectedTab}
           onImageClick={handleImageClick}
         />
-        <Dialog open={modalOpen} onClose={handleClose} maxWidth="md">
-          <div style={{ position: 'relative', background: '#000' }}>
+        <Dialog 
+          open={modalOpen} 
+          onClose={handleClose} 
+          maxWidth="md"
+        >
+          <div>
             <IconButton
               onClick={handlePrev}
-              style={{ position: 'absolute', top: '50%', left: 10, zIndex: 2, color: '#fff', transform: 'translateY(-50%)' }}
+              sx={{
+                ...navButtonStyle,
+                position: 'absolute',
+                top: '50%',
+                left: 20,
+                zIndex: 2,
+                color: '#fff',
+                transform: 'translateY(-50%)',
+              }}
               aria-label="Previous"
             >
               <ArrowBackIosNewIcon fontSize="large" />
@@ -80,18 +102,39 @@ function App() {
             <img
               src={galleryData[selectedTab][modalIndex].url}
               alt="enlarged"
-              style={{ display: 'block', maxWidth: '80vw', maxHeight: '80vh', margin: 'auto' }}
+              style={{ 
+                display: 'block', 
+                maxWidth: '80vw', 
+                maxHeight: '80vh', 
+                margin: 'auto',
+                boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+              }}
             />
             <IconButton
               onClick={handleNext}
-              style={{ position: 'absolute', top: '50%', right: 10, zIndex: 2, color: '#fff', transform: 'translateY(-50%)' }}
+              sx={{
+                ...navButtonStyle,
+                position: 'absolute',
+                top: '50%',
+                right: 20,
+                zIndex: 2,
+                color: '#fff',
+                transform: 'translateY(-50%)',
+              }}
               aria-label="Next"
             >
               <ArrowForwardIosIcon fontSize="large" />
             </IconButton>
             <IconButton
               onClick={handleClose}
-              style={{ position: 'absolute', top: 10, right: 10, zIndex: 2, color: '#fff' }}
+              sx={{
+                ...navButtonStyle,
+                position: 'absolute',
+                top: 20,
+                right: 20,
+                zIndex: 2,
+                color: '#fff',
+              }}
               aria-label="Close"
             >
               <CloseIcon fontSize="large" />
