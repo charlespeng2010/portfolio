@@ -12,11 +12,16 @@ const StyledCard = styled(Card)({
   },
 });
 
-const StyledCardMedia = styled(CardMedia)({
-  width: '100%',
-    height: 240,
-    objectFit: 'cover'
-});
+const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
+    width: '100%',
+    objectFit: 'contain',
+    [theme.breakpoints.up('sm')]: {
+        height: 240,
+    },
+    [theme.breakpoints.down('sm')]: {
+        height: 'auto',
+    },
+}));
 
 const ImageGallery = ({ images, onImageClick }) => (
   <Grid container spacing={2} sx={{ p: 2 }}>
